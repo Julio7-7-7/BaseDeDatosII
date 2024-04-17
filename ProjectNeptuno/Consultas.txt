@@ -1,0 +1,102 @@
+PRACTICA DE DDL
+1. CREAR LA BASE DE DATOS  "NEGOCIOBD"
+
+    CREATE DATABASE NEGOCIOBD
+
+2. CREAR LA TABLA "EMPLEADO"
+
+   USE NEGOCIOBD
+   
+   CREATE TABLE EMPLEADO
+   ( IDEMPLEADO INT PRIMARY KEY,
+     NOMBRE VARCHAR(20),
+     SEXO CHAR(1) 
+     )
+
+3. AUMENTAR LA COLUMNA CELULAR A LA TABLA EMPLEADO
+  
+   ALTER TABLE EMPLEADO
+   ADD COLUMN CELULAR INT
+
+4. BORRAR LA TABLA EMPLEADO
+
+   DROP TABLE EMPLEADO
+   DROP EMPLEADO.  
+
+
+PRACTICA DE D.M.L
+
+1. INSERTAR UNA NUEVA FILA EN LA TABLA CATEGORIA 
+
+INSERT INTO Categorías(IdCategoría,NombreCategoría,Descripción) 
+VALUES ( 9,'Aceites','Todos los Aceites')
+
+2. MODIFICAR LA CADEGORIA '4' DE 'QUESOS' A 'LECHES Y QUESOS'
+
+UPDATE Categorías SET Descripción = ' Leches y Quesos'
+where IdCategoría = 4
+
+3.ELIMINAR CATEGORIA 9 
+
+Delect from Categorías
+where IdCategoría = 9
+
+
+
+PRACTICA DE  DEL SELECT 
+
+1. SELECIONAR TODOS LOS CLIENTES
+
+SELECT*
+FROM CLIENTES
+
+
+2.SELECIONAR CLIENETES DE FRANCIA 
+ID,NOMBRE,PAIS
+
+SELECT IdCliente,NombreCompañía,País
+FROM CLIENTES 
+WHERE País = 'Francia'
+
+
+3. SELECIONAR clientes de Madrid España
+ID,NOMBRE,PAIS,ciudad
+
+SELECT IdCliente,NombreCompañía,País,ciudad
+FROM CLIENTES 
+WHERE País = 'España' and Ciudad ='Madrid'
+
+
+4. MOSTRAR TODOS LOS PEDIDOS DEL AÑO DEL 1997
+idpedido,fechapedido
+
+from pedidos
+where fechapedido Between #1/1/1997# and #31/12/1997#
+
+
+
+5. Ordenar el anterior resultado del pedido mas nuevo al mas antiguo 
+
+select idpedido,fechapedido
+from pedidos 
+where year ( fechapedido)= 1997
+orde by fechapedido desc
+
+6. contar cuantos pedidos hay en el mes de mayo de 1997
+
+select count ( idpedido)
+from pedidos 
+where year ( fechapedido)= 1997 and month (fechapedido)=5
+
+
+
+
+
+
+
+
+
+
+
+
+

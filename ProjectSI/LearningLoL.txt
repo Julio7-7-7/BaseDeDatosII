@@ -1,0 +1,97 @@
+-- insert into persona values ('2211' ,'Julio' ,'5108', 'M')
+--select * from persona
+--update persona set idpersona = '97848' 
+--where ci = '5108' 
+--select (idpersona) as IDPersona, Nombre from persona 
+--update persona set nombre = 'César'
+--where idpersona = 97848
+--select (nombre) as Nombre from persona
+--where idpersona = '97848'
+
+--update persona set idpersona = '1'
+--where nombre = ('Julio')
+--update persona set idpersona = '2'
+--where nombre = ('César')
+--insert into persona values('3', 'Juan', '124574', 'M')
+--insert into persona values('4', 'Maria', '156374', 'F')
+
+--delete from persona
+--where nombre = 'Maria'
+
+select * from persona
+where idpersona > '2'
+alter table persona
+add numero int
+
+alter table persona
+rename colunm numero to number
+
+alter table persona
+drop column number
+
+alter table persona
+add column numero int
+
+update persona set numero = ('25')
+
+alter table persona
+alter column numero drop not null
+
+alter table persona
+add primary key (idpersona)
+
+delete from persona
+where idpersona = '3'
+
+update persona
+set idpersona = '3'
+where idpersona = '4'
+
+alter table persona
+add column sueldo int 
+
+update persona 
+set sueldo = '3000'
+where idpersona = '1'
+
+update persona 
+set sueldo = '2000'
+where idpersona = '2'
+
+update persona 
+set sueldo = '1000'
+where idpersona = '3'
+
+select nombre, numero, sueldo, (sueldo + 1500) as bono from persona
+
+alter table persona 
+add column bono int
+
+update persona set bono = sueldo + 1500
+
+select * from persona order by sueldo 
+
+select * from persona 
+where nombre like '%a%'
+
+select count(*)from persona
+where nombre like '%a%'
+
+select sum(bono) from persona
+
+select * from persona
+
+create table alumno(
+	idalumno serial primary key not null,
+	nomAlumno varchar(20) not null,
+	registro int not null
+)
+
+insert into alumno(nomAlumno, registro) values ('Julio César', '221097848')
+insert into alumno(nomAlumno, registro) values ('Alejandro', '20152264')
+
+update alumno
+set registro = '201522645'
+where idalumno = '2'
+
+select * from alumno
