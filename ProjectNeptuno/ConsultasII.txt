@@ -128,7 +128,12 @@ SELECT * FROM cliente
 WHERE clinombre LIKE '%Juan%'
  
 
-Nota: Cuando se desea especificar palabras que solo contengan ciertos caracteres se puede adicionar un espacio, ejemplo si se quisiera listar productos que son ace y no aceite se deberá colocar luego de la palabra ace  un espacio ya que si no se deja el espacio busca todas las palabras que contengan ‘ace’ incluyendo como resultado aceite, ace, etc
+Nota: Cuando se desea especificar palabras que solo contengan 
+ciertos caracteres se puede adicionar un espacio, ejemplo si se 
+quisiera listar productos que son ace y no aceite se deberá colocar
+ luego de la palabra ace  un espacio ya que si no se deja el espacio 
+ busca todas las palabras que contengan ‘ace’ incluyendo como 
+ resultado aceite, ace, etc
 
  
 
