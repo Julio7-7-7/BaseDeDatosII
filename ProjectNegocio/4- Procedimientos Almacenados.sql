@@ -26,15 +26,18 @@ GO
 -----PARA EJECUTAR-----
 EXEC pa_importecompra
 
------CURSORES-----
 
------DISMINUIR STOCK-----
+-----PROCEDIMIENTOS CON CURSORES-----
+
+-----DISMINUIR STOCK LUEGO DE UNA VENTA-----
 
 CREATE PROCEDURE pa_disminuirstock @nrov INT AS
-DECLARE cursor1 CURSOR FOR SELECT codigo, cantidad
-FROM ventadetalle WHERE nrov = @nrv
+DECLARE cursor1 CURSOR FOR 
+SELECT codigo, cantidad
+FROM ventadetalle 
+WHERE nrov = @nrov
 DECLARE @cod VARCHAR(10)
-DECLARE @cat INT
+DECLARE @cant INT
 
 OPEN cursor1 
 FETCH cursor1 INTO @cod, @cant
@@ -44,14 +47,36 @@ WHILE(@@fetch_status=0)
         UPDATE productos
         SET stock = stock - @cant
         WHERE codigo = @cod
-        FETCH cursor1 into @cod, @cant
+        FETCH cursor1 INTO @cod, @cant
     END
 CLOSE cursor1
 DEALLOCATE cursor1
 GO 
-
 -----PARA LLAMAR AL TRIGGER------
 EXEC pa_disminuirstock 4 --o cualquier venta--
 
+-----AUMENTAR STOCK LUEGO DE UNA COMPRA-----
+
+CREATE PROCEDURE pa_aumentarstock @nroc INT AS
+DECLARE cursor1 CURSOR FOR
+SELECT codigo, cantidad
+FROM compradetalle
+WHERE nroc = @nroc
+DECLARE @cod VARCHAR(10)
+DECLARE @cant INT
+
+OPEN  cursor1
+FETCH cursor1 INTO @cod, @cant
+
+WHILE(@@fetch_status = 0)
+    BEGIN
+        UPDATE productos
+        SET stock = stock + @cant
+        WHERE codigo = @cod
+        FETCH cursor1 into @cod, @cant
+    END
+CLOSE cursor1
+DEALLOCATE cursor1
+GO
 
 

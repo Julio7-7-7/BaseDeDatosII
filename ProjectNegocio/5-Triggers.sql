@@ -1,7 +1,7 @@
---Procedimiento especial que no se llama y se ejecutan automaticamente cuando algo sucede en la tabla
+--Son procedimientos especiales que no se llaman y se ejecutan automaticamente cuando algo sucede en la tabla
 --Los almacenados no se relacionan con nadie aunque sean parte de la bd
---y los triggers si son objetos pertenecientes a las tablas
---El precedimiento tiene argumentos y los triggers no
+--y los triggers si. Son objetos pertenecientes a las tablas
+--El procedimiento tiene argumentos y los triggers no
 
 --El evento tiene momentos que pueden ser antes durante y despues
 
@@ -11,10 +11,27 @@
 --LAS TABLAS TEMPORALES DEL SISTEMA
 --1) Created y deleted las define el sistema y se usan para cuando se insertan nuevos registros y es temporal 
 
------TRIGGERS O DISPARADORES-----
+-----TRIGGERS-----
 
------A) TABLA VENTADETALLE-----
-CREATE TRIGGER tgr_vd_importeins ON ventadetalle AFTER INSERT AS
+-----A) AL METER UN PRODUCTO EN LA COMPRA-----
+CREATE TRIGGER tg_dc_importeinserted ON compradetalle AFTER INSERT AS
+    DECLARE @n INT
+
+	SELECT @n=nroc FROM inserted  
+	EXEC pa_importecompra @n
+GO
+
+-----B) AL QUITAR UN PRODUCTO DE LA COMPRA-----
+CREATE TRIGGER tg_dc_importedeleted ON compradetalle AFTER DELETE,UPDATE AS
+  	DECLARE @n INT
+
+	SELECT @n=nroc FROM deleted  
+	EXEC pa_importecompra @n
+GO
+
+
+-----C) AL METER UN PRODUCTO EN LA VENTA-----
+CREATE TRIGGER tg_dv_importeinserted ON ventadetalle AFTER INSERT AS
     DECLARE @n INT
 
     SELECT @n=nrov FROM inserted  
@@ -22,54 +39,39 @@ CREATE TRIGGER tgr_vd_importeins ON ventadetalle AFTER INSERT AS
 GO
 
 
-------TRIGGER PARA CUANDO SE BORRA-----
+------D) AL QUITAR UN PRODUCTO DE LA COMPRA-----
 
-CREATE TRIGGER tgr_vd_importedel ON ventadetalle AFTER DELETE,UPDATE AS
+CREATE TRIGGER tg_dv_importedeleted ON ventadetalle AFTER DELETE,UPDATE AS
     DECLARE @n INT
 
 	SELECT @n=nrov FROM deleted  
 	EXEC pa_importeventa @n
 GO
 
------TABLA COMPRADETALLE-----
-CREATE TRIGGER tgr_cd_importeins ON compradetalle AFTER INSERT AS
-    DECLARE @n INT
+-----E) ACTUALIZAR EL STOCK AL COMPRAR-----
+CREATE TRIGGER tg_stockcompra ON compra AFTER UPDATE AS
+    DECLARE @estado CHAR(1)
+    DECLARE @nroc INT
 
-	SELECT @n=nroc FROM inserted  
-	EXEC pa_importecompra @n
+    SELECT @nroc = nroc, @estado = estado 
+    FROM inserted
+    if @estado = 'C'
+    exec pa_aumentarstock @nroc
 GO
 
-CREATE TRIGGER des_CD_importeDel ON compradetalle AFTER DELETE,UPDATE AS
-  	DECLARE @n INT
+-----F) ACTUALIZAR STOCK AL VENDER-----
 
-	SELECT @n=nroc FROM deleted  
-	EXEC pa_importecompra @n
+CREATE TRIGGER tg_stockventa ON venta AFTER UPDATE AS
+    DECLARE @estado CHAR(1) 
+    DECLARE @nrov INT
+
+    SELECT @nrov = nrov, @estado = estado 
+    FROM inserted 
+    IF @estado = 'C'
+        EXEC pa_disminuirstock @nrov
 GO
-
-------TRIGGER PARA CUANDO SE ACTUALIZA-----
-CREATE TRIGGER des_importeup ON ventadetalle AFTER UPDATE AS
-
-    DECLARE @n INT
-
-    SELECT @n = nrov FROM deleted
-    EXEC importeventa @n
-
 
 -----PARA BORRAR UN TRIGGER------
-delete trigger importdel
-drop trigger des_importeup 
-
------TRIGGER PARA ACTUALIZAR STOCK AL CERRAR LA VENTA-----
-
-create trigger des_ventacerrar on venta after UPDATE AS
-    DECLARE @es char(1) 
-    DECLARE @nv int
-    select @nv = nrov, @es = estado from inserted 
-    if @es = 'C'
-        exec pa_disminuirstock @nv
-go
-
-
-
-
+DELETE trigger importdel
+DROP TRIGGER des_importeup 
 
