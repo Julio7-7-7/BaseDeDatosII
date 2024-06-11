@@ -28,11 +28,11 @@ CREATE TABLE cliente(
 
 CREATE TABLE producto(
    idproducto varchar(10) PRIMARY KEY,
-   idclase varchar(10) not null,
+   idclase varchar(10),
    idalmacen varchar(10),
-   nombre varchar(20) NOT NULL,
+   nombre varchar(50) NOT NULL,
    costou Smallmoney NOT NULL,
-   stock int NOT NULL
+   stock int
 )
 
 CREATE TABLE empleado(
@@ -48,16 +48,16 @@ CREATE TABLE compra(
    idproveedor varchar(10),
    fecha SmallDateTime NOT NULL,
    estado char(1),
-   importe Smallmoney NOT NULL
+   importe Smallmoney
 )
 
 CREATE TABLE detallecompra(
-   idproducto varchar(10),
    nrocompra int,
-   cantidad int not null,
-   preciou Smallmoney not null,
-   subimporte Smallmoney NOT NULL,
-   PRIMARY KEY(idproducto, nrocompra)
+   idproducto varchar(10),
+   cantidad int,
+   costou Smallmoney,
+   subimporte Smallmoney,
+   PRIMARY KEY(nrocompra, idproducto)
 )
 
 CREATE TABLE venta( 
@@ -66,14 +66,20 @@ CREATE TABLE venta(
    idempleado varchar(10),
    fecha SmallDateTime NOT NULL,
    estado varchar(1),  
-   importe Smallmoney NOT NULL
+   importe Smallmoney
 )
 
 create table detalleventa(
 	nroventa int,
 	idproducto varchar(10),
-	preciou Smallmoney NOT NULL,
-	cantidad int NOT NULL,
-	subimporte Smallmoney NOT NULL,
+	cantidad int,
+	costou Smallmoney,
+	subimporte Smallmoney,
 	Primary Key (nroventa, idproducto)
+)
+
+CREATE TABLE usuario(
+	login varchar (10) primary key,
+	clave varchar (10),
+	tipousuario char(1)
 )
